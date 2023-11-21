@@ -10,7 +10,7 @@
 int main(){
 	srand(time(NULL));
 	
-	printf("\n\n\n\n                         step to strat");
+	printf("\n\n\n\n\n\n\n\n                         step to strat");
 	getchar();
 	
 	Maze map1;
@@ -20,6 +20,7 @@ int main(){
 	printMap(&map1);
 	
 	char ch;
+	bool win;
 	while (1){
 		if (_kbhit()){ //如果有按鍵按下，則_kbhit()函數傳回真   
             ch = _getch(); //使用_getch()函數取得按下的鍵值
@@ -27,7 +28,18 @@ int main(){
             if(ch == 27) break;//當按下ESC時循環，ESC鍵的鍵值時27.
             printMap(&map1);
             Sleep(10);
+            if(map1.Player_position[0]==map1.Exit_position[0] && map1.Player_position[1]==map1.Exit_position[1]){
+            	win = true;
+				break;
+			}
         }
+	}
+	if(win){
+		system("cls");
+		printf("\n\n\n\n\n\n\n\n                         you win!!\n\n\n\n\n\n\n\n");
+	}else{
+		system("cls");
+		printf("\n\n\n\n\n\n\n\n                         you die!!\n\n\n\n\n\n\n\n");
 	}
 	
 	system ("pause") ;

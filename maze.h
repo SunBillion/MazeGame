@@ -8,6 +8,7 @@ typedef struct Maze Maze;
 struct Maze{
     int Map[200][200];
     int Player_position[2];
+    int Exit_position[2];
     int map_high;
     int map_wide;
     int room_num;
@@ -78,14 +79,14 @@ void creatMap(Maze* map, int high, int wide)
 void makeRoad(Maze* map, int x, int y)
 {
 	if(map->Map[x+1][y]+map->Map[x-1][y]+map->Map[x][y+1]+map->Map[x][y-1]+map->Map[x][y]<=1){
-		//Sleep(3);
+		Sleep(3);
 		if(rand()%100<100){
 			//printMap(map, true);
 			map->Map[x][y] = 1;
 			map->road_num++;
 			if(rand()%100 < 10) creatRoom(map, x, y, 4, 4);
-			/*gotoxy(x, y*2);
-			printf("  "); */ 
+			gotoxy(x, y*2);
+			printf("  "); 
 			if(rand()%2) 
 				if(rand()%2) makeRoad(map, x-1, y); 
 				else makeRoad(map, x+1, y);
@@ -130,11 +131,13 @@ void creatRoom(Maze* map, int x, int y, int room_high, int room_wide){
 	for(j=y-(room_wide-2);ok && j<y+(room_wide-2);j++) 
 		if(map->Map[x-(room_high-2)][j]+map->Map[x-(room_high-2)][j+1] == 2)ok = false;
 	if(ok){
+		map->Exit_position[0] = x;
+		map->Exit_position[1] = y;
 		for(i=x-(room_high-3);i<=x+(room_high-3);i++){
 			for(j=y-(room_wide-3);j<=y+(room_wide-3);j++){
 				map->Map[i][j]=1;
-				/*gotoxy(i, j*2);
-				printf("  ");*/ 
+				gotoxy(i, j*2);
+				printf("  ");
 			}
 		}
 		/*
@@ -174,6 +177,8 @@ void printCamera (Maze* map, int x, int y, int high, int wide)
 		for(j=y; j<y+wide; j++){
 			if(i==map->Player_position[0] && j==map->Player_position[1]){
 				printf(" P");
+			}else if(i==map->Exit_position[0] && j==map->Exit_position[1]){
+				printf("EX");
 			}else{
 				switch(map->Map[i][j]){
 					case 0:
